@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <ImageView
+        android:id="@+id/ivDownload"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorPrimaryDark"
+        android:contentDescription="@string/download_image"
+        app:layout_constraintBottom_toTopOf="@+id/guideDivisor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_home_cloud_download" />
+
+    <RadioGroup
+        android:id="@+id/rgFileOptions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/radio_margin_top"
+        app:layout_constraintBottom_toTopOf="@+id/btnDownload"
+        app:layout_constraintEnd_toEndOf="@+id/btnDownload"
+        app:layout_constraintStart_toStartOf="@+id/btnDownload"
+        app:layout_constraintTop_toBottomOf="@+id/ivDownload">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/btnGlide"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/radio_button_height"
+            android:text="@string/glide_desc"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/btnLoadApp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/radio_button_height"
+            android:layout_marginVertical="@dimen/vertical_margin"
+            android:text="@string/load_app_desc"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/btnRetrofit"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/radio_button_height"
+            android:text="@string/retrofit_desc"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+    </RadioGroup>
+
+    <com.udacity.LoadingButton
+        android:id="@+id/btnDownload"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/download_button_height"
+        android:layout_margin="@dimen/margin_top"
+        android:layout_marginBottom="@dimen/margin_end"
+        android:text="@string/download"
+        app:backgroundColor="@color/colorPrimary"
+        app:backgroundColorLoading="@color/colorPrimaryDark"
+        app:buttonCircleColor="@color/colorAccent"
+        app:text="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideDivisor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.27" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

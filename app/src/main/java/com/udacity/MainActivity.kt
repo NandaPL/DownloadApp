@@ -10,11 +10,13 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import com.udacity.databinding.ActivityMainBinding
 import com.udacity.databinding.ContentMainBinding
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,15 +29,17 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var notificationHelper: NotificationHelper
 
-    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dataBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(dataBinding.root)
+
         contentMainBinding = dataBinding.contentMain
         setSupportActionBar(dataBinding.toolbar)
 
         registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+
+        onDownloadOptionsClicked()
 
         contentMainBinding.btnDownload.setOnClickListener {
             if (::url.isInitialized) {
@@ -47,7 +51,9 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
 
+    private fun onDownloadOptionsClicked() {
         dataBinding.contentMain.rgFileOptions.setOnCheckedChangeListener { _, index ->
             when (index) {
                 R.id.btnGlide -> {
@@ -102,20 +108,4 @@ class MainActivity : AppCompatActivity() {
         downloadID = downloadManager.enqueue(request)
     }
 
-    @SuppressLint("UnspecifiedRegisterReceiverFlag")
-    override fun onResume() {
-        super.onResume()
-        registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
-    }
-
-    override fun onPause() {
-        super.onPause()
-        unregisterReceiver(receiver)
-    }
-
-    companion object {
-        private const val URL =
-            "https://github.com/udacity/nd940-c3-advanced-android-programming-project-starter/archive/master.zip"
-        private const val CHANNEL_ID = "channelId"
-    }
 }

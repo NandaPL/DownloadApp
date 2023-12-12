@@ -14,4 +14,8 @@ object Constants {
 
     const val STATUS_KEY = "Status"
     const val FILE_NAME_KEY = "FileName"
+
+    const val SUCCESS = "Success"
+
+    const val FAILED = "Failed"
 }

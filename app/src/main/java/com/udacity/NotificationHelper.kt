@@ -62,7 +62,6 @@ class NotificationHelper (
             )
 
             channel.enableVibration(true)
-            channel.enableLights(true)
 
             channel.description = context.getString(R.string.loading_completed)
             val notificationManager = context.getSystemService(NotificationManager::class.java)

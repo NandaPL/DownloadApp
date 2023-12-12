@@ -59,15 +59,15 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/download_button_height"
         android:layout_margin="@dimen/margin_top"
-        android:layout_marginBottom="@dimen/margin_end"
         android:text="@string/download"
+        android:textAlignment="center"
         app:backgroundColor="@color/colorPrimary"
         app:backgroundColorLoading="@color/colorPrimaryDark"
         app:buttonCircleColor="@color/colorAccent"
-        app:text="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:text="@color/white" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideDivisor"

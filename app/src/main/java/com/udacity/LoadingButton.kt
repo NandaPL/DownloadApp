@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.withStyledAttributes
+import kotlin.math.min
 import kotlin.properties.Delegates
 
 class LoadingButton @JvmOverloads constructor(
@@ -26,7 +27,7 @@ class LoadingButton @JvmOverloads constructor(
     var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
         when (new) {
             ButtonState.Loading -> {
-                buttonText = resources.getString(R.string.status)
+                buttonText = context.getString(R.string.make_download)
                 valueAnimator.start()
             }
             ButtonState.Completed -> {
@@ -44,7 +45,7 @@ class LoadingButton @JvmOverloads constructor(
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        textSize = 80.0f
+        textSize = 60.0f
         textAlign = Paint.Align.CENTER
     }
 
@@ -107,6 +108,14 @@ class LoadingButton @JvmOverloads constructor(
 
     private fun drawCircle(canvas: Canvas?) {
         paint.color = circleColor
-        canvas?.drawArc(widthSize - 200f, 30f, widthSize - 50f, 170f, 0f, progress.toFloat(), true, paint)
+
+        val radius = min(width, height) / 2.0f * 0.6f
+        val offsetX = 360f
+        val left = (width - 2 * radius) / 2.0f + offsetX
+        val top = (height - 2 * radius) / 2.0f
+        val right = left + 2 * radius
+        val bottom = top + 2 * radius
+
+        canvas?.drawArc(left, top, right, bottom, 0f, progress.toFloat(), true, paint)
     }
 }

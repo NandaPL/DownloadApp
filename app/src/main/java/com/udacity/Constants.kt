@@ -18,4 +18,6 @@ object Constants {
     const val SUCCESS = "Success"
 
     const val FAILED = "Failed"
+
+    const val NOTIFICATION_PERMISSION_REQUEST_CODE = 123
 }

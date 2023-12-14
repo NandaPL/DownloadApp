@@ -35,4 +35,6 @@
     <string name="retrofit">Retrofit</string>
     <string name="download_image">Image download icon</string>
     <string name="make_download">Make download</string>
+    <string name="message_permission_granted">Permission for notification already granted.</string>
+    <string name="message_permission_denied">Permissão de notificação não concedida.</string>
 </resources>

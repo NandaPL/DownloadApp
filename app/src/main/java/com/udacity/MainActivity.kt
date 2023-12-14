@@ -1,27 +1,25 @@
 package com.udacity
 
-import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.view.View
+import android.provider.Settings
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.udacity.databinding.ActivityMainBinding
 import com.udacity.databinding.ContentMainBinding
-import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var dataBinding: ActivityMainBinding
-
     private var downloadID: Long = 0
 
     private lateinit var contentMainBinding: ContentMainBinding
@@ -31,6 +29,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (hasNotificationPermission()) {
+            // Permission already granted
+            showToast(getString(R.string.message_permission_granted))
+        } else {
+            requestNotificationPermission()
+        }
+
         dataBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(dataBinding.root)
 
@@ -45,11 +51,7 @@ class MainActivity : AppCompatActivity() {
             if (::url.isInitialized) {
                 contentMainBinding.btnDownload.buttonState = ButtonState.Loading
                 download()
-            } else Toast.makeText(
-                this@MainActivity,
-                getString(R.string.you_should_select_from_list),
-                Toast.LENGTH_SHORT
-            ).show()
+            } else showToast(getString(R.string.you_should_select_from_list))
         }
     }
 
@@ -106,6 +108,55 @@ class MainActivity : AppCompatActivity() {
         val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
         // enqueue puts the download request in the queue.
         downloadID = downloadManager.enqueue(request)
+    }
+
+    private val notificationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (hasNotificationPermission()) {
+                showToast(getString(R.string.message_permission_granted))
+            } else {
+                showToast(getString(R.string.message_permission_denied))
+            }
+        }
+
+    private fun hasNotificationPermission(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // For Android Ore (API 26) and higher versions
+            val notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.areNotificationsEnabled()
+        } else {
+            // For versions prior to Oreo
+            NotificationManagerCompat.from(this).areNotificationsEnabled()
+        }
+    }
+
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // For Android Ore (API 26) and higher versions
+            val intent = Intent().apply {
+                action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
+                putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            notificationPermissionLauncher.launch(intent)
+        } else {
+            // For versions prior to Oreo
+            val intent = Intent().apply {
+                action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                data = Uri.fromParts("package", packageName, null)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            notificationPermissionLauncher.launch(intent)
+        }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(
+            this@MainActivity,
+            message,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
 }

@@ -58,7 +58,7 @@ class NotificationHelper (
             val channel = NotificationChannel(
                 Constants.CHANNEL_ID,
                 Constants.CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_HIGH
             )
 
             channel.enableVibration(true)

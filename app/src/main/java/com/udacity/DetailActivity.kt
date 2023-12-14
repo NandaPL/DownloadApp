@@ -32,6 +32,10 @@ class DetailActivity : AppCompatActivity() {
             }
         )
 
+        val motionLayout = dataBinding.contentDetail.motionLayout
+
+        motionLayout.transitionToEnd()
+
         dataBindingContent.btnOk.setOnClickListener {
             finish()
         }
